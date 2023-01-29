@@ -19,7 +19,7 @@ export default function Router() {
 		{
 			path: '/dashboard',
 			element: (
-				<ProtectedRoute isLoggedIn={Cookies.get('AUTHORIZED')}>
+				<ProtectedRoute isLoggedIn={Cookies.get('AUTH')}>
 					<DashboardLayout />
 				</ProtectedRoute>
 			),
