@@ -1,7 +1,7 @@
 import ky from 'ky'
 
 export const $ky = ky.create({
-	prefixUrl: 'http://localhost:8000',
+	prefixUrl: 'https://ki2-api.deta.dev',
 	credentials: 'include',
 	mode: 'cors'
 })
