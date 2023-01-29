@@ -11,15 +11,12 @@ import {
 	Popover,
 	Typography
 } from '@mui/material'
-import { useAuth } from '../../../hooks/useAuth'
-import { useActions } from '../../../hooks/useActions'
+import Cookies from 'js-cookie'
 import { useUser } from '../../../hooks/useUser'
 
 export default function AccountPopover() {
 	const [open, setOpen] = useState(null)
-	const { token } = useAuth()
 	const { account } = useUser()
-	const { logout } = useActions()
 	const navigate = useNavigate()
 
 	const handleOpen = event => {
@@ -31,7 +28,7 @@ export default function AccountPopover() {
 	}
 
 	const handleLogout = () => {
-		logout({ token })
+		Cookies.remove('token')
 		navigate('/login', { replace: true })
 	}
 

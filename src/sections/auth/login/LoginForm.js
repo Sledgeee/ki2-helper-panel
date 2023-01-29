@@ -11,7 +11,7 @@ import { AuthService } from '../../../services/authService'
 export default function LoginForm() {
 	const navigate = useNavigate()
 
-	const { login, profile } = useActions()
+	const { profile } = useActions()
 	const [errored, setErrored] = useState(false)
 	const [username, setUsername] = useState('')
 	const [userId, setUserId] = useState(null)
@@ -59,13 +59,8 @@ export default function LoginForm() {
 		}
 		setConfirmLoginVisibility(false)
 		setIsLoading(true)
-		const { success, user, token } = await AuthService.checkOtp(
-			attemptId,
-			userId,
-			otp
-		)
+		const { success, user } = await AuthService.checkOtp(attemptId, userId, otp)
 		if (success) {
-			login({ token })
 			profile({ account: user })
 			navigate('/dashboard', { replace: true })
 		} else {

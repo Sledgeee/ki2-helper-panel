@@ -1,3 +1,3 @@
-import {useSelector} from "react-redux";
+import Cookies from 'js-cookie'
 
-export const useAuth = () => useSelector(state => state.auth)
+export const useAuth = () => Cookies.get('token') || ''
