@@ -11,12 +11,11 @@ import {
 	Popover,
 	Typography
 } from '@mui/material'
-import Cookies from 'js-cookie'
 import { useUser } from '../../../hooks/useUser'
 
 export default function AccountPopover() {
 	const [open, setOpen] = useState(null)
-	const { account } = useUser()
+	const user = useUser()
 	const navigate = useNavigate()
 
 	const handleOpen = event => {
@@ -28,7 +27,8 @@ export default function AccountPopover() {
 	}
 
 	const handleLogout = () => {
-		Cookies.remove('token')
+		localStorage.removeItem('user')
+		localStorage.removeItem('token')
 		navigate('/login', { replace: true })
 	}
 
@@ -51,7 +51,7 @@ export default function AccountPopover() {
 					})
 				}}
 			>
-				<Avatar src={account.pic} alt='photoURL' />
+				<Avatar src={user.pic} alt='photoURL' />
 			</IconButton>
 
 			<Popover
@@ -75,10 +75,10 @@ export default function AccountPopover() {
 			>
 				<Box sx={{ my: 1.5, px: 2.5 }}>
 					<Typography variant='subtitle2' noWrap>
-						{account.first_name} {account.last_name}
+						{user.first_name} {user.last_name}
 					</Typography>
 					<Typography variant='body2' sx={{ color: 'text.secondary' }} noWrap>
-						@{account.username}
+						@{user.username}
 					</Typography>
 				</Box>
 

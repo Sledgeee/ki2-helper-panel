@@ -1,10 +1,9 @@
 import { Navigate, useRoutes } from 'react-router-dom'
 import { lazy } from 'react'
-import Cookies from 'js-cookie'
-// layouts
+
 import DashboardLayout from './layouts/dashboard'
 import SimpleLayout from './layouts/simple'
-//
+
 import LoginPage from './pages/LoginPage'
 import Page404 from './pages/Page404'
 import { ProtectedRoute } from './components/protected-route'
@@ -19,7 +18,7 @@ export default function Router() {
 		{
 			path: '/dashboard',
 			element: (
-				<ProtectedRoute isLoggedIn={Cookies.get('token')}>
+				<ProtectedRoute isLoggedIn={localStorage.getItem('token')}>
 					<DashboardLayout />
 				</ProtectedRoute>
 			),

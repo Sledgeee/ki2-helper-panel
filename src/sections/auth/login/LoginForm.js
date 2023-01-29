@@ -3,15 +3,12 @@ import { useNavigate } from 'react-router-dom'
 // @mui
 import { CircularProgress, Stack, TextField } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
-import { useActions } from '../../../hooks/useActions'
 import { AuthService } from '../../../services/authService'
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
 	const navigate = useNavigate()
-
-	const { profile } = useActions()
 	const [errored, setErrored] = useState(false)
 	const [username, setUsername] = useState('')
 	const [userId, setUserId] = useState(null)
@@ -59,9 +56,14 @@ export default function LoginForm() {
 		}
 		setConfirmLoginVisibility(false)
 		setIsLoading(true)
-		const { success, user } = await AuthService.checkOtp(attemptId, userId, otp)
+		const { success, user, token } = await AuthService.checkOtp(
+			attemptId,
+			userId,
+			otp
+		)
 		if (success) {
-			profile({ account: user })
+			localStorage.setItem('user', JSON.stringify(user))
+			localStorage.setItem('token', token)
 			navigate('/dashboard', { replace: true })
 		} else {
 			setErrored(true)

@@ -1,3 +1,1 @@
-import Cookies from 'js-cookie'
-
-export const useAuth = () => Cookies.get('token') || ''
+export const useAuth = () => localStorage.get('token') || ''

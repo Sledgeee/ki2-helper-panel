@@ -35,7 +35,7 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
 	const { pathname } = useLocation()
-	const { account } = useUser()
+	const user = useUser()
 
 	const isDesktop = useResponsive('up', 'lg')
 
@@ -64,15 +64,15 @@ export default function Nav({ openNav, onCloseNav }) {
 			<Box sx={{ mb: 5, mx: 2.5 }}>
 				<Link underline='none'>
 					<StyledAccount>
-						<Avatar src={account.pic} alt='photoURL' />
+						<Avatar src={user.pic} alt='photoURL' />
 
 						<Box sx={{ ml: 2 }}>
 							<Typography variant='subtitle2' sx={{ color: 'text.primary' }}>
-								{account.first_name} {account.last_name}
+								{user.first_name} {user.last_name}
 							</Typography>
 
 							<Typography variant='body2' sx={{ color: 'text.secondary' }}>
-								@{account.username}
+								@{user.username}
 							</Typography>
 						</Box>
 					</StyledAccount>
