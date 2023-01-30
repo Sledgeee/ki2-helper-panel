@@ -24,14 +24,17 @@ const MagicLoginPage = () => {
 
 	useEffect(() => {
 		;(async () => {
-			const response = await AuthService.magicLogin(
+			const { success, user, token } = await AuthService.magicLogin(
 				query.get('uid'),
 				query.get('otp'),
 				query.get('hash_')
 			)
 			setLoading(false)
-			if (response === null) {
+			if (success) {
+				localStorage.setItem('user', JSON.stringify(user))
+				localStorage.setItem('token', token)
 				setStatus('success')
+				navigate('/dashboard', { replace: true })
 				redirect()
 			} else {
 				setStatus('error')
