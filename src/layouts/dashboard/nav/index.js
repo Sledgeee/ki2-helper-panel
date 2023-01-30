@@ -5,14 +5,13 @@ import { useLocation } from 'react-router-dom'
 import { alpha, styled } from '@mui/material/styles'
 import { Avatar, Box, Drawer, Link, Typography } from '@mui/material'
 // hooks
-import useResponsive from '../../../hooks/useResponsive'
+import { useResponsive, useUser } from '../../../hooks'
 // components
 import Logo from '../../../components/logo'
 import Scrollbar from '../../../components/scrollbar'
 import NavSection from '../../../components/nav-section'
 //
 import navConfig from './config'
-import { useUser } from '../../../hooks/useUser'
 
 // ----------------------------------------------------------------------
 
@@ -67,12 +66,8 @@ export default function Nav({ openNav, onCloseNav }) {
 						<Avatar src={user.pic} alt='photoURL' />
 
 						<Box sx={{ ml: 2 }}>
-							<Typography variant='subtitle2' sx={{ color: 'text.primary' }}>
-								{user.first_name} {user.last_name}
-							</Typography>
-
-							<Typography variant='body2' sx={{ color: 'text.secondary' }}>
-								@{user.username}
+							<Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
+								{user.username}
 							</Typography>
 						</Box>
 					</StyledAccount>

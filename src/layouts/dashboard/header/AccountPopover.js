@@ -74,11 +74,8 @@ export default function AccountPopover() {
 				}}
 			>
 				<Box sx={{ my: 1.5, px: 2.5 }}>
-					<Typography variant='subtitle2' noWrap>
-						{user.first_name} {user.last_name}
-					</Typography>
-					<Typography variant='body2' sx={{ color: 'text.secondary' }} noWrap>
-						@{user.username}
+					<Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
+						{user.username}
 					</Typography>
 				</Box>
 

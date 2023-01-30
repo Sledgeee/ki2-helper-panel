@@ -1,5 +1,3 @@
-import { Suspense } from 'react'
-import { Backdrop, CircularProgress } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 // @mui
 import { styled } from '@mui/material/styles'
@@ -24,21 +22,10 @@ const StyledHeader = styled('header')(({ theme }) => ({
 export default function SimpleLayout() {
 	return (
 		<>
-			<Suspense
-				fallback={
-					<>
-						<Backdrop open>
-							<CircularProgress color={'info'} />
-						</Backdrop>
-					</>
-				}
-			>
-				<StyledHeader>
-					<Logo />
-				</StyledHeader>
-
-				<Outlet />
-			</Suspense>
+			<StyledHeader>
+				<Logo />
+			</StyledHeader>
+			<Outlet />
 		</>
 	)
 }

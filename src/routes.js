@@ -4,13 +4,15 @@ import { lazy } from 'react'
 import DashboardLayout from './layouts/dashboard'
 import SimpleLayout from './layouts/simple'
 
-import LoginPage from './pages/LoginPage'
-import Page404 from './pages/Page404'
 import { ProtectedRoute } from './components/protected-route'
+import { Loading } from './components/loading'
 
 const DashboardAppPage = lazy(() => import('./pages/DashboardAppPage'))
 const BirthdayPage = lazy(() => import('./pages/BirthdayPage'))
 const TeacherPage = lazy(() => import('./pages/TeacherPage'))
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const MagicLoginPage = lazy(() => import('./pages/MagicLoginPage'))
+const Page404 = lazy(() => import('./pages/Page404'))
 
 // ----------------------------------------------------------------------
 export default function Router() {
@@ -24,26 +26,60 @@ export default function Router() {
 			),
 			children: [
 				{ element: <Navigate to='/dashboard/app' />, index: true },
-				{ path: 'app', element: <DashboardAppPage /> },
+				{
+					path: 'app',
+					element: (
+						<Loading>
+							<DashboardAppPage />
+						</Loading>
+					)
+				},
 				{
 					path: 'birthdays',
-					element: <BirthdayPage />
+					element: (
+						<Loading>
+							<BirthdayPage />
+						</Loading>
+					)
 				},
 				{
 					path: 'teachers',
-					element: <TeacherPage />
+					element: (
+						<Loading>
+							<TeacherPage />
+						</Loading>
+					)
 				}
 			]
 		},
 		{
 			path: 'login',
-			element: <LoginPage />
+			element: (
+				<Loading>
+					<LoginPage />
+				</Loading>
+			)
 		},
 		{
 			element: <SimpleLayout />,
 			children: [
 				{ element: <Navigate to='/dashboard/app' />, index: true },
-				{ path: '404', element: <Page404 /> },
+				{
+					path: '404',
+					element: (
+						<Loading>
+							<Page404 />
+						</Loading>
+					)
+				},
+				{
+					path: 'magic-login',
+					element: (
+						<Loading>
+							<MagicLoginPage />
+						</Loading>
+					)
+				},
 				{ path: '*', element: <Navigate to='/404' /> }
 			]
 		},

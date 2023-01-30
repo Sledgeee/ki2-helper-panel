@@ -1,9 +1,8 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 // @mui
 import { styled } from '@mui/material/styles'
 //
-import { Backdrop, CircularProgress } from '@mui/material'
 import Header from './header'
 
 const Nav = lazy(() => import('./nav'))
@@ -38,24 +37,14 @@ export default function DashboardLayout() {
 	const [open, setOpen] = useState(false)
 
 	return (
-		<Suspense
-			fallback={
-				<>
-					<Backdrop open>
-						<CircularProgress color={'info'} />
-					</Backdrop>
-				</>
-			}
-		>
-			<StyledRoot>
-				<Header onOpenNav={() => setOpen(true)} />
+		<StyledRoot>
+			<Header onOpenNav={() => setOpen(true)} />
 
-				<Nav openNav={open} onCloseNav={() => setOpen(false)} />
+			<Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
-				<Main>
-					<Outlet />
-				</Main>
-			</StyledRoot>
-		</Suspense>
+			<Main>
+				<Outlet />
+			</Main>
+		</StyledRoot>
 	)
 }

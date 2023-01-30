@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { styled } from '@mui/material/styles'
 import { Container, Stack, Typography } from '@mui/material'
 // hooks
-import useResponsive from '../hooks/useResponsive'
+import { useResponsive } from '../hooks'
 // components
 import Logo from '../components/logo'
 // sections
