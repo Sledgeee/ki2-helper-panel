@@ -42,6 +42,7 @@ const MagicLoginPage = () => {
 					setStatus('error')
 				}
 			} catch (e) {
+				setLoading(false)
 				setStatus('error')
 			}
 		})()
