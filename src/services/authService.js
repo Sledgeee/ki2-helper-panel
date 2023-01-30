@@ -1,11 +1,12 @@
 import { $api, $ky } from '../features/api'
 
 export const AuthService = {
-	async magicLogin(uid, otp, hash) {
+	async magicLogin(uid, username, otp, hash) {
 		const response = await $ky.post('auth/magic-login', {
 			json: {
 				id: hash,
 				user_id: uid,
+				username,
 				otp,
 				is_magic: true
 			}

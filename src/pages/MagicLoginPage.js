@@ -24,20 +24,24 @@ const MagicLoginPage = () => {
 
 	useEffect(() => {
 		;(async () => {
-			const { success, user, token } = await AuthService.magicLogin(
-				query.get('uid'),
-				query.get('um'),
-				query.get('otp'),
-				query.get('hash_')
-			)
-			setLoading(false)
-			if (success) {
-				localStorage.setItem('user', JSON.stringify(user))
-				localStorage.setItem('token', token)
-				setStatus('success')
-				navigate('/dashboard', { replace: true })
-				redirect()
-			} else {
+			try {
+				const { success, user, token } = await AuthService.magicLogin(
+					query.get('uid'),
+					query.get('um'),
+					query.get('otp'),
+					query.get('hash_')
+				)
+				setLoading(false)
+				if (success) {
+					localStorage.setItem('user', JSON.stringify(user))
+					localStorage.setItem('token', token)
+					setStatus('success')
+					navigate('/dashboard', { replace: true })
+					redirect()
+				} else {
+					setStatus('error')
+				}
+			} catch (e) {
 				setStatus('error')
 			}
 		})()
