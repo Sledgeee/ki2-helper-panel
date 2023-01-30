@@ -59,6 +59,7 @@ export default function LoginForm() {
 		const { success, user, token } = await AuthService.checkOtp(
 			attemptId,
 			userId,
+			username,
 			otp
 		)
 		if (success) {

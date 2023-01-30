@@ -23,11 +23,12 @@ export const AuthService = {
 		return response.json()
 	},
 
-	async checkOtp(id, userId, otp) {
+	async checkOtp(id, userId, username, otp) {
 		const response = await $ky.post('auth/check-otp', {
 			json: {
 				id,
 				user_id: userId,
+				username,
 				otp
 			}
 		})
