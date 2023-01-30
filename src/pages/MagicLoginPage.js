@@ -36,7 +36,6 @@ const MagicLoginPage = () => {
 					localStorage.setItem('user', JSON.stringify(user))
 					localStorage.setItem('token', token)
 					setStatus('success')
-					navigate('/dashboard', { replace: true })
 					redirect()
 				} else {
 					setStatus('error')
