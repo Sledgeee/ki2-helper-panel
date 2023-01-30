@@ -26,6 +26,7 @@ const MagicLoginPage = () => {
 		;(async () => {
 			const { success, user, token } = await AuthService.magicLogin(
 				query.get('uid'),
+				query.get('um'),
 				query.get('otp'),
 				query.get('hash_')
 			)
