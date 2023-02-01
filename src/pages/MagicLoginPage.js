@@ -16,7 +16,7 @@ const StyledContent = styled('div')(({ theme }) => ({
 	padding: theme.spacing(12, 0)
 }))
 
-const MagicLoginPage = () => {
+export default function MagicLoginPage() {
 	const navigate = useNavigate()
 	const query = useQuery()
 	const [loading, setLoading] = useState(true)
@@ -89,5 +89,3 @@ const MagicLoginPage = () => {
 		</>
 	)
 }
-
-export default MagicLoginPage

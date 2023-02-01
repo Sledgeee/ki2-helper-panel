@@ -7,9 +7,13 @@ import SimpleLayout from './layouts/simple'
 import { ProtectedRoute } from './components/protected-route'
 import { Loading } from './components/loading'
 
-const DashboardAppPage = lazy(() => import('./pages/DashboardAppPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const AdminPage = lazy(() => import('./pages/AdminPage'))
 const BirthdayPage = lazy(() => import('./pages/BirthdayPage'))
 const TeacherPage = lazy(() => import('./pages/TeacherPage'))
+const PlaylistPage = lazy(() => import('./pages/PlaylistPage'))
+const LessonPage = lazy(() => import('./pages/LessonPage'))
+const SchedulePage = lazy(() => import('./pages/SchedulePage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const MagicLoginPage = lazy(() => import('./pages/MagicLoginPage'))
 const Page404 = lazy(() => import('./pages/Page404'))
@@ -18,24 +22,32 @@ const Page404 = lazy(() => import('./pages/Page404'))
 export default function Router() {
 	return useRoutes([
 		{
-			path: '/dashboard',
+			path: '/',
 			element: (
 				<ProtectedRoute isLoggedIn={localStorage.getItem('token')}>
 					<DashboardLayout />
 				</ProtectedRoute>
 			),
 			children: [
-				{ element: <Navigate to='/dashboard/app' />, index: true },
+				{ element: <Navigate to='/dashboard' />, index: true },
 				{
-					path: 'app',
+					path: '/dashboard',
 					element: (
 						<Loading>
-							<DashboardAppPage />
+							<DashboardPage />
 						</Loading>
 					)
 				},
 				{
-					path: 'birthdays',
+					path: '/admins',
+					element: (
+						<Loading>
+							<AdminPage />
+						</Loading>
+					)
+				},
+				{
+					path: '/birthdays',
 					element: (
 						<Loading>
 							<BirthdayPage />
@@ -43,10 +55,34 @@ export default function Router() {
 					)
 				},
 				{
-					path: 'teachers',
+					path: '/teachers',
 					element: (
 						<Loading>
 							<TeacherPage />
+						</Loading>
+					)
+				},
+				{
+					path: '/lessons',
+					element: (
+						<Loading>
+							<LessonPage />
+						</Loading>
+					)
+				},
+				{
+					path: '/playlists',
+					element: (
+						<Loading>
+							<PlaylistPage />
+						</Loading>
+					)
+				},
+				{
+					path: '/schedule',
+					element: (
+						<Loading>
+							<SchedulePage />
 						</Loading>
 					)
 				}
@@ -63,7 +99,7 @@ export default function Router() {
 		{
 			element: <SimpleLayout />,
 			children: [
-				{ element: <Navigate to='/dashboard/app' />, index: true },
+				{ element: <Navigate to='/dashboard' />, index: true },
 				{
 					path: '404',
 					element: (
