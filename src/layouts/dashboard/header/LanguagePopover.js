@@ -28,7 +28,11 @@ export default function LanguagePopover() {
 		setOpen(event.currentTarget)
 	}
 
-	const handleClose = async value => {
+	const handleClose = () => {
+		setOpen(null)
+	}
+
+	const handleChangeLang = async value => {
 		await i18next.changeLanguage(value)
 		setIconToShow(LANGS.find(x => x.value === i18next.language).icon)
 		setOpen(null)
@@ -79,7 +83,7 @@ export default function LanguagePopover() {
 						<MenuItem
 							key={option.value}
 							selected={option.value === i18next.language}
-							onClick={() => handleClose(option.value)}
+							onClick={() => handleChangeLang(option.value)}
 						>
 							<Box
 								component='img'
