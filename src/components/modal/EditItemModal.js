@@ -5,26 +5,18 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import Iconify from '../iconify'
 
-export default function NewItemModal({ handleCreate, children }) {
-	const [open, setOpen] = useState(false)
+export default function EditItemModal({
+	open,
+	handleClose,
+	handleUpdate,
+	children
+}) {
 	const [isLoading, setIsLoading] = useState(false)
 	const { t } = useTranslation('modal')
 
-	const handleClickOpen = () => {
-		setOpen(true)
-	}
-
-	const handleClose = () => {
-		setOpen(false)
-	}
-
 	return (
 		<div>
-			<Button variant='contained' onClick={handleClickOpen}>
-				<Iconify icon='eva:plus-fill' />
-			</Button>
 			<Dialog open={open} onClose={handleClose}>
 				<DialogTitle>{t('CreateNewItem')}</DialogTitle>
 				{children}
@@ -44,16 +36,16 @@ export default function NewItemModal({ handleCreate, children }) {
 						variant={'contained'}
 						onClick={async () => {
 							setIsLoading(true)
-							const status = await handleCreate()
+							const status = await handleUpdate()
 							setIsLoading(false)
 							if (status === 1) {
-								setOpen(false)
+								handleClose()
 							} else if (status !== 0) {
 								console.log(status)
 							}
 						}}
 					>
-						{t('Create')}
+						{t('Update')}
 					</Button>
 				</DialogActions>
 			</Dialog>

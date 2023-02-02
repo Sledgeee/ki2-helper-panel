@@ -7,34 +7,35 @@ import SimpleLayout from './layouts/simple'
 import { ProtectedRoute } from './components/protected-route'
 import { Loading } from './components/loading'
 
-const DashboardPage = lazy(() => import('./pages/DashboardPage'))
-const AdminPage = lazy(() => import('./pages/AdminPage'))
-const BirthdayPage = lazy(() => import('./pages/BirthdayPage'))
-const TeacherPage = lazy(() => import('./pages/TeacherPage'))
-const PlaylistPage = lazy(() => import('./pages/PlaylistPage'))
-const LessonPage = lazy(() => import('./pages/LessonPage'))
+const BotTasksPage = lazy(() => import('./pages/BotTasksPage'))
+const AdminsPage = lazy(() => import('./pages/AdminsPage'))
+const BirthdaysPage = lazy(() => import('./pages/BirthdaysPage'))
+const TeachersPage = lazy(() => import('./pages/TeachersPage'))
+const PlaylistsPage = lazy(() => import('./pages/PlaylistsPage'))
+const LessonsPage = lazy(() => import('./pages/LessonsPage'))
 const SchedulePage = lazy(() => import('./pages/SchedulePage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const MagicLoginPage = lazy(() => import('./pages/MagicLoginPage'))
 const Page404 = lazy(() => import('./pages/Page404'))
 
-// ----------------------------------------------------------------------
 export default function Router() {
 	return useRoutes([
 		{
 			path: '/',
 			element: (
-				<ProtectedRoute isLoggedIn={localStorage.getItem('token')}>
-					<DashboardLayout />
-				</ProtectedRoute>
+				<Loading>
+					<ProtectedRoute isLoggedIn={localStorage.getItem('token')}>
+						<DashboardLayout />
+					</ProtectedRoute>
+				</Loading>
 			),
 			children: [
-				{ element: <Navigate to='/dashboard' />, index: true },
+				{ element: <Navigate to='/bot-tasks' />, index: true },
 				{
-					path: '/dashboard',
+					path: '/bot-tasks',
 					element: (
 						<Loading>
-							<DashboardPage />
+							<BotTasksPage />
 						</Loading>
 					)
 				},
@@ -42,7 +43,7 @@ export default function Router() {
 					path: '/admins',
 					element: (
 						<Loading>
-							<AdminPage />
+							<AdminsPage />
 						</Loading>
 					)
 				},
@@ -50,7 +51,7 @@ export default function Router() {
 					path: '/birthdays',
 					element: (
 						<Loading>
-							<BirthdayPage />
+							<BirthdaysPage />
 						</Loading>
 					)
 				},
@@ -58,7 +59,7 @@ export default function Router() {
 					path: '/teachers',
 					element: (
 						<Loading>
-							<TeacherPage />
+							<TeachersPage />
 						</Loading>
 					)
 				},
@@ -66,7 +67,7 @@ export default function Router() {
 					path: '/lessons',
 					element: (
 						<Loading>
-							<LessonPage />
+							<LessonsPage />
 						</Loading>
 					)
 				},
@@ -74,7 +75,7 @@ export default function Router() {
 					path: '/playlists',
 					element: (
 						<Loading>
-							<PlaylistPage />
+							<PlaylistsPage />
 						</Loading>
 					)
 				},
@@ -99,7 +100,7 @@ export default function Router() {
 		{
 			element: <SimpleLayout />,
 			children: [
-				{ element: <Navigate to='/dashboard' />, index: true },
+				{ element: <Navigate to='/bot-tasks' />, index: true },
 				{
 					path: '404',
 					element: (

@@ -12,18 +12,10 @@ import {
 	TextField,
 	Typography
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { API_ENDPOINTS, ApiService } from '../services/apiService'
-import NewItemModal from '../components/modal/NewItemModal'
+import { NewItemModal } from '../components/modal'
 import { TablePageLayout } from '../layouts/table-page'
-
-const TABLE_HEAD = [
-	{ id: 'name', label: 'Name', alignRight: false },
-	{ id: 'short_name', label: 'Short Name', alignRight: false },
-	{ id: 'type', label: 'Type', alignRight: false },
-	{ id: 'teacher', label: 'Teacher', alignRight: false },
-	{ id: 'zoom', label: 'Zoom', alignRight: false },
-	{ id: '' }
-]
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] > a[orderBy]) {
@@ -35,20 +27,30 @@ function descendingComparator(a, b, orderBy) {
 	return 0
 }
 
-export default function LessonPage() {
+export default function LessonsPage() {
 	const [name, setName] = useState('')
 	const [shortName, setShortName] = useState('')
 	const [types, setTypes] = useState([true, false, false])
 	const [teachers, setTeachers] = useState(['', '', ''])
 	const [zooms, setZooms] = useState(['', '', ''])
-	const [sameInfo, setSameInfo] = useState(false)
 
 	const [nameErrored, setNameErrored] = useState(true)
 	const [shortNameErrored, setShortNameErrored] = useState(true)
 	const [refreshTable, setRefreshTable] = useState(true)
 	const [teacherList, setTeacherList] = useState([])
 
-	const strTypes = ['пр.', 'лаб.', 'лекц.']
+	const { t } = useTranslation(['table', 'nav'])
+
+	const TABLE_HEAD = [
+		{ id: 'name', label: t('LessonName'), alignRight: false },
+		{ id: 'short_name', label: t('LessonShortName'), alignRight: false },
+		{ id: 'type', label: t('Type'), alignRight: false },
+		{ id: 'teacher', label: t('Teacher'), alignRight: false },
+		{ id: 'zoom', label: 'Zoom', alignRight: false },
+		{ id: '' }
+	]
+
+	const TYPES = ['пр.', 'лаб.', 'лекц.']
 
 	useEffect(() => {
 		;(async () => {
@@ -101,7 +103,7 @@ export default function LessonPage() {
 							{
 								name,
 								short_name: shortName,
-								type: strTypes[i],
+								type: TYPES[i],
 								teacher: teachers[i],
 								zoom: zooms[i]
 							},
@@ -121,20 +123,20 @@ export default function LessonPage() {
 	return (
 		<TablePageLayout
 			fetchEndpoint={API_ENDPOINTS.LESSON}
-			title={'Lessons'}
+			title={t('Lessons', { ns: 'nav' })}
 			tableHead={TABLE_HEAD}
 			refreshTable={refreshTable}
 			setRefreshTable={setRefreshTable}
 			descendingComparator={descendingComparator}
+			colsSpan={6}
 			button={
 				<>
-					<NewItemModal btnText={'New lesson'} handleCreate={handleCreate}>
+					<NewItemModal handleCreate={handleCreate}>
 						<DialogContent>
 							<TextField
-								autoFocus
 								margin='dense'
 								id='name'
-								label='Name'
+								label={t('LessonName')}
 								type='text'
 								fullWidth
 								variant='outlined'
@@ -144,91 +146,90 @@ export default function LessonPage() {
 							<TextField
 								margin='dense'
 								id='short_name'
-								label='Short name'
+								label={t('LessonShortName')}
 								type='text'
 								fullWidth
 								variant='outlined'
 								onChange={handleShortNameChange}
 								error={shortNameErrored}
 							/>
-							{!sameInfo && (
-								<>
-									<Typography typography={'subtitle1'} sx={{ mt: 1 }}>
-										Types
-									</Typography>
-									{strTypes.map((value, index) => (
-										<Stack key={index}>
-											<FormControlLabel
-												control={
-													<Checkbox
-														checked={types[index]}
-														onChange={() => {
-															const copy = types
-															copy[index] = !copy[index]
-															setTypes([...copy])
-														}}
-													/>
-												}
-												label={value}
-											/>
-											{types[index] && (
-												<>
-													<FormControl id={'form3'} margin={'dense'} fullWidth>
-														<InputLabel id='teacher-label3'>Teacher</InputLabel>
-														<Select
-															labelId={'teacher-label3'}
-															id='teacher3'
-															label='teacher'
-															value={teachers[index]}
-															onChange={e => {
-																const copy = teachers
-																copy[index] = e.target.value
-																setTeachers([...copy])
-															}}
-														>
-															{teacherList.map((value, index) => (
-																<MenuItem key={index} value={value.name}>
-																	{value.name}
-																</MenuItem>
-															))}
-														</Select>
-													</FormControl>
-													<TextField
-														margin='dense'
-														id='zoom'
-														label='Zoom'
-														type='text'
-														fullWidth
-														variant='outlined'
-														value={zooms[index]}
+							<>
+								{TYPES.map((value, index) => (
+									<Stack key={index}>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked={types[index]}
+													onChange={() => {
+														const copy = types
+														copy[index] = !copy[index]
+														setTypes([...copy])
+													}}
+												/>
+											}
+											label={value}
+										/>
+										{types[index] && (
+											<>
+												<FormControl
+													id={`form${index}`}
+													margin={'dense'}
+													fullWidth
+												>
+													<InputLabel id={`teacher-label${index}`}>
+														Teacher
+													</InputLabel>
+													<Select
+														labelId={`teacher-label${index}`}
+														label='teacher'
+														value={teachers[index]}
 														onChange={e => {
-															const copy = zooms
+															const copy = teachers
 															copy[index] = e.target.value
-															setZooms([...copy])
-														}}
-													/>
-													<Button
-														variant={'outlined'}
-														sx={{ my: 1 }}
-														onClick={() => {
-															const teachersCopy = teachers
-															const zoomsCopy = zooms
-															for (let i = 0; i < 3; i += 1) {
-																teachersCopy[i] = teachers[index]
-																zoomsCopy[i] = zooms[index]
-															}
-															setTeachers([...teachersCopy])
-															setZooms([...zoomsCopy])
+															setTeachers([...copy])
 														}}
 													>
-														Copy to other
-													</Button>
-												</>
-											)}
-										</Stack>
-									))}
-								</>
-							)}
+														{teacherList.map((value, index) => (
+															<MenuItem key={index} value={value.name}>
+																{value.name}
+															</MenuItem>
+														))}
+													</Select>
+												</FormControl>
+												<TextField
+													margin='dense'
+													label='Zoom'
+													type='text'
+													fullWidth
+													variant='outlined'
+													value={zooms[index]}
+													onChange={e => {
+														const copy = zooms
+														copy[index] = e.target.value
+														setZooms([...copy])
+													}}
+												/>
+												<Button
+													variant={'outlined'}
+													sx={{ my: 1, textTransform: 'none' }}
+													onClick={() => {
+														const teachersCopy = teachers
+														const zoomsCopy = zooms
+														for (let i = 0; i < 3; i += 1) {
+															teachersCopy[i] = teachers[index]
+															zoomsCopy[i] = zooms[index]
+														}
+														setTeachers([...teachersCopy])
+														setZooms([...zoomsCopy])
+													}}
+												>
+													{t('CopyToOther')}
+												</Button>
+											</>
+										)}
+									</Stack>
+								))}
+							</>
 						</DialogContent>
 						<Stack sx={{ px: 3, py: 1 }}>
 							<Typography>{''}</Typography>

@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-// @mui
 import { CircularProgress, Stack, TextField } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
+import { useTranslation } from 'react-i18next'
 import { AuthService } from '../../../services/authService'
-
-// ----------------------------------------------------------------------
 
 export default function LoginForm() {
 	const navigate = useNavigate()
@@ -17,6 +15,8 @@ export default function LoginForm() {
 	const [loginFormVisibility, setLoginFormVisibility] = useState(true)
 	const [confirmLoginVisibility, setConfirmLoginVisibility] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
+
+	const { t } = useTranslation(['common', 'table'])
 
 	const handleUsernameChange = event => {
 		if (errored) {
@@ -65,7 +65,7 @@ export default function LoginForm() {
 		if (success) {
 			localStorage.setItem('user', JSON.stringify(user))
 			localStorage.setItem('token', token)
-			navigate('/dashboard', { replace: true })
+			navigate('/', { replace: true })
 		} else {
 			setErrored(true)
 		}
@@ -81,12 +81,12 @@ export default function LoginForm() {
 			)}
 			{loginFormVisibility && (
 				<Stack>
-					<p>Enter your username specified during registration in the bot</p>
+					<p>{t('SignInToDescription')}</p>
 					<Stack spacing={3}>
 						<TextField
 							onChange={handleUsernameChange}
 							name='email'
-							label='Username'
+							label={t('Username', { ns: 'table' })}
 							error={errored}
 						/>
 					</Stack>
@@ -99,17 +99,14 @@ export default function LoginForm() {
 							variant='contained'
 							onClick={handleLoginClick}
 						>
-							Login
+							{t('SignIn')}
 						</LoadingButton>
 					</Stack>
 				</Stack>
 			)}
 			{confirmLoginVisibility && (
 				<Stack>
-					<p>
-						The bot sent you an OTP to confirm your login via a private message
-						in the Telegram
-					</p>
+					<p>{t('BotSentMessage')}</p>
 					<Stack spacing={3}>
 						<TextField
 							onChange={handleOtpChange}
@@ -127,13 +124,10 @@ export default function LoginForm() {
 							variant='contained'
 							onClick={handleCheckOtpClick}
 						>
-							Check OTP
+							{t('CheckOTP')}
 						</LoadingButton>
 					</Stack>
-					<b>
-						If you don't receive the notification, try refreshing the page and
-						trying again
-					</b>
+					<b>{t('BotWarn')}</b>
 				</Stack>
 			)}
 		</>

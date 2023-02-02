@@ -1,49 +1,46 @@
 import { useState } from 'react'
 import { DialogContent, TextField } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import NewItemModal from '../components/modal/NewItemModal'
 import { TablePageLayout } from '../layouts/table-page'
 import { API_ENDPOINTS, ApiService } from '../services/apiService'
 
-const TABLE_HEAD = [
-	{ id: 'link', label: 'Playlist link', alignRight: false },
-	{ id: '' }
-]
-
 function descendingComparator(a, b, orderBy) {
-	if (b[orderBy] > a[orderBy]) {
-		return -1
-	}
-	if (b[orderBy] < a[orderBy]) {
-		return 1
-	}
-	return 0
+	return b[orderBy].localeCompare(a[orderBy])
 }
 
-export default function BirthdayPage() {
-	const [link, setLink] = useState('')
-	const [linkErrored, setLinkErrored] = useState(true)
+export default function TeachersPage() {
+	const [teacherName, setTeacherName] = useState('')
+	const [teacherNameErrored, setTeacherNameErrored] = useState(true)
 	const [refreshTable, setRefreshTable] = useState(false)
 
-	const handleLinkChange = event => {
+	const { t } = useTranslation(['nav', 'table'])
+
+	const TABLE_HEAD = [
+		{ id: 'name', label: t('Teacher', { ns: 'table' }), alignRight: false },
+		{ id: '' }
+	]
+
+	const handleTeacherNameChange = event => {
 		if (!event.target.value) {
-			setLinkErrored(true)
+			setTeacherNameErrored(true)
 			return
 		}
-		if (linkErrored) {
-			setLinkErrored(false)
+		if (teacherNameErrored) {
+			setTeacherNameErrored(false)
 		}
-		setLink(event.target.value)
+		setTeacherName(event.target.value)
 	}
 
 	const handleCreate = async () => {
-		if (linkErrored) {
+		if (teacherNameErrored) {
 			return 0
 		}
 		try {
 			const { status } = await ApiService.createOne(
-				API_ENDPOINTS.PLAYLIST,
+				API_ENDPOINTS.TEACHER,
 				{
-					link
+					name: teacherName
 				},
 				'crud/'
 			)
@@ -59,26 +56,25 @@ export default function BirthdayPage() {
 
 	return (
 		<TablePageLayout
-			fetchEndpoint={API_ENDPOINTS.PLAYLIST}
-			title={'Playlists'}
+			fetchEndpoint={API_ENDPOINTS.TEACHER}
+			title={t('Teachers')}
 			tableHead={TABLE_HEAD}
 			refreshTable={refreshTable}
 			setRefreshTable={setRefreshTable}
 			descendingComparator={descendingComparator}
 			button={
 				<>
-					<NewItemModal btnText={'New playlist'} handleCreate={handleCreate}>
+					<NewItemModal handleCreate={handleCreate}>
 						<DialogContent>
 							<TextField
-								autoFocus
 								margin='dense'
-								id='link'
-								label='Link'
+								id='teacher_name'
+								label={t('Teacher', { ns: 'table' })}
 								type='text'
 								fullWidth
 								variant='outlined'
-								onChange={handleLinkChange}
-								error={linkErrored}
+								onChange={handleTeacherNameChange}
+								error={teacherNameErrored}
 							/>
 						</DialogContent>
 					</NewItemModal>

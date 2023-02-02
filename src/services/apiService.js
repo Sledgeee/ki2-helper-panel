@@ -26,7 +26,7 @@ export const ApiService = {
 	},
 
 	async updateOne(url, id, json, prefix = '') {
-		const response = await $api.patch(`${prefix}${url}/${id}/`, {
+		const response = await $api.put(`${prefix}${url}/${id}/`, {
 			json
 		})
 		return { data: await response.json(), status: response.status }

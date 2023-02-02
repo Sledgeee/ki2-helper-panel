@@ -3,6 +3,7 @@ import { CircularProgress, Container, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '../hooks'
 import { AuthService } from '../services/authService'
 
@@ -21,6 +22,7 @@ export default function MagicLoginPage() {
 	const query = useQuery()
 	const [loading, setLoading] = useState(true)
 	const [status, setStatus] = useState(null)
+	const { t } = useTranslation()
 
 	useEffect(() => {
 		;(async () => {
@@ -49,14 +51,14 @@ export default function MagicLoginPage() {
 
 	function redirect() {
 		setTimeout(() => {
-			navigate('/dashboard', { replace: true })
+			navigate('/', { replace: true })
 		}, 3000)
 	}
 
 	return (
 		<>
 			<Helmet>
-				<title> Magic Login | KI2 Helper </title>
+				<title> {t('MagicLogin')} | KI2 Helper </title>
 			</Helmet>
 
 			<Container>
@@ -65,22 +67,22 @@ export default function MagicLoginPage() {
 					{status === 'success' && (
 						<>
 							<Typography variant='h3' paragraph>
-								Login successful ✅
+								{t('LoginSuccessful')} ✅
 							</Typography>
 
 							<Typography sx={{ color: 'text.secondary' }}>
-								You will be redirected in 3 seconds...
+								{t('WillRedirect')}
 							</Typography>
 						</>
 					)}
 					{status === 'error' && (
 						<>
 							<Typography variant='h3' paragraph>
-								Login error ❌
+								{t('LoginError')} ❌
 							</Typography>
 
 							<Typography sx={{ color: 'text.secondary' }}>
-								Your link seems to be incorrect
+								{t('LinkIncorrect')}
 							</Typography>
 						</>
 					)}

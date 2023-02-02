@@ -10,6 +10,7 @@ import {
 	Typography
 } from '@mui/material'
 // component
+import { useTranslation } from 'react-i18next'
 import Iconify from '../../../components/iconify'
 
 // ----------------------------------------------------------------------
@@ -22,8 +23,8 @@ const StyledRoot = styled(Toolbar)(({ theme }) => ({
 }))
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-	width: 240,
-	transition: theme.transitions.create(['box-shadow', 'width'], {
+	'width': 240,
+	'transition': theme.transitions.create(['box-shadow', 'width'], {
 		easing: theme.transitions.easing.easeInOut,
 		duration: theme.transitions.duration.shorter
 	}),
@@ -51,6 +52,8 @@ export default function ListToolbar({
 	onFilterName,
 	handleDelete
 }) {
+	const { t } = useTranslation('table')
+
 	return (
 		<StyledRoot
 			sx={{
@@ -68,7 +71,7 @@ export default function ListToolbar({
 				<StyledSearch
 					value={filterName}
 					onChange={onFilterName}
-					placeholder='Search...'
+					placeholder={t('Search')}
 					startAdornment={
 						<InputAdornment position='start'>
 							<Iconify

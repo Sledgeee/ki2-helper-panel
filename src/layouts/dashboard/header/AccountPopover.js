@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-// @mui
+import { useTranslation } from 'react-i18next'
 import { alpha } from '@mui/material/styles'
 import {
 	Avatar,
@@ -11,12 +11,13 @@ import {
 	Popover,
 	Typography
 } from '@mui/material'
-import { useUser } from '../../../hooks/useUser'
+import { useUser } from '../../../hooks'
 
 export default function AccountPopover() {
 	const [open, setOpen] = useState(null)
 	const user = useUser()
 	const navigate = useNavigate()
+	const { t } = useTranslation()
 
 	const handleOpen = event => {
 		setOpen(event.currentTarget)
@@ -62,10 +63,10 @@ export default function AccountPopover() {
 				transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 				PaperProps={{
 					sx: {
-						p: 0,
-						mt: 1.5,
-						ml: 0.75,
-						width: 180,
+						'p': 0,
+						'mt': 1.5,
+						'ml': 0.75,
+						'width': 180,
 						'& .MuiMenuItem-root': {
 							typography: 'body2',
 							borderRadius: 0.75
@@ -82,7 +83,7 @@ export default function AccountPopover() {
 				<Divider sx={{ borderStyle: 'dashed' }} />
 
 				<MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-					Logout
+					{t('Logout')}
 				</MenuItem>
 			</Popover>
 		</>

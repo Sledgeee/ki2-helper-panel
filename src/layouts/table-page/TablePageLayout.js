@@ -20,6 +20,7 @@ import {
 	Typography
 } from '@mui/material'
 import { filter } from 'lodash'
+import { useTranslation } from 'react-i18next'
 import Iconify from '../../components/iconify'
 import Scrollbar from '../../components/scrollbar'
 import ListHead from '../../sections/@dashboard/table/ListHead'
@@ -35,7 +36,9 @@ export default function TestPageLayout({
 	descendingComparator,
 	button,
 	tableHead,
-	prefixForUpdateAndDelete = 'crud/'
+	prefixForUpdateAndDelete = 'crud/',
+	prefixForFetch = 'crud/',
+	colsSpan = 6
 }) {
 	const [open, setOpen] = useState(null)
 	const [confirmMenuOpen, setConfirmMenuOpen] = useState(false)
@@ -50,11 +53,16 @@ export default function TestPageLayout({
 	const [isLoading, setIsLoading] = useState(false)
 	const [fetchError, setFetchError] = useState(false)
 
+	const { t } = useTranslation('table')
+
 	useEffect(() => {
 		;(async () => {
 			setIsLoading(true)
 			try {
-				const { data, status } = await ApiService.getAll(fetchEndpoint, 'crud/')
+				const { data, status } = await ApiService.getAll(
+					fetchEndpoint,
+					prefixForFetch
+				)
 				if (status === 200) {
 					setData(data)
 				}
@@ -83,7 +91,7 @@ export default function TestPageLayout({
 				const values = Object.values(_item)
 				/* eslint-disable no-restricted-syntax */
 				for (const value of values) {
-					if (value.toLowerCase().indexOf(query.toLowerCase()) > -1) {
+					if (String(value).toLowerCase().indexOf(query.toLowerCase()) > -1) {
 						return true
 					}
 				}
@@ -167,6 +175,8 @@ export default function TestPageLayout({
 		filterName
 	)
 
+	const handleUpdate = async () => {}
+
 	const handleDeleteMany = async () => {
 		await ApiService.deleteMany(
 			fetchEndpoint,
@@ -231,7 +241,11 @@ export default function TestPageLayout({
 								{isLoading ? (
 									<TableBody>
 										<TableRow>
-											<TableCell align='center' colSpan={6} sx={{ py: 3 }}>
+											<TableCell
+												align='center'
+												colSpan={colsSpan}
+												sx={{ py: 3 }}
+											>
 												<CircularProgress color='info' />
 											</TableCell>
 										</TableRow>
@@ -265,8 +279,8 @@ export default function TestPageLayout({
 															/>
 														</TableCell>
 
-														{values.map(value => (
-															<TableCell key={value} align='left'>
+														{values.map((value, index) => (
+															<TableCell key={index} align='left'>
 																{value}
 															</TableCell>
 														))}
@@ -285,7 +299,7 @@ export default function TestPageLayout({
 											})}
 										{emptyRows > 0 && (
 											<TableRow style={{ height: 53 * emptyRows }}>
-												<TableCell colSpan={6} />
+												<TableCell colSpan={colsSpan} />
 											</TableRow>
 										)}
 									</TableBody>
@@ -294,21 +308,24 @@ export default function TestPageLayout({
 								{isNotFound && (
 									<TableBody>
 										<TableRow>
-											<TableCell align='center' colSpan={6} sx={{ py: 3 }}>
+											<TableCell
+												align='center'
+												colSpan={colsSpan}
+												sx={{ py: 3 }}
+											>
 												<Paper
 													sx={{
 														textAlign: 'center'
 													}}
 												>
 													<Typography variant='h6' paragraph>
-														Not found
+														{t('NotFound')}
 													</Typography>
 
 													<Typography variant='body2'>
-														No results found for &nbsp;
+														{t('NoResults')} &nbsp;
 														<strong>&quot;{filterName}&quot;</strong>.
-														<br /> Try checking for typos or using complete
-														words.
+														<br /> {t('TryChecking')}
 													</Typography>
 												</Paper>
 											</TableCell>
@@ -319,19 +336,22 @@ export default function TestPageLayout({
 								{fetchError && (
 									<TableBody>
 										<TableRow>
-											<TableCell align='center' colSpan={6} sx={{ py: 3 }}>
+											<TableCell
+												align='center'
+												colSpan={colsSpan}
+												sx={{ py: 3 }}
+											>
 												<Paper
 													sx={{
 														textAlign: 'center'
 													}}
 												>
 													<Typography variant='h6' paragraph>
-														Fetch error
+														{t('FetchError')}
 													</Typography>
 
 													<Typography variant='body2'>
-														It looks like the API is temporarily unavailable or
-														an error occurred while trying to retrieve data
+														{t('ApiError')}
 													</Typography>
 												</Paper>
 											</TableCell>
@@ -341,18 +361,22 @@ export default function TestPageLayout({
 								{!fetchError && !isLoading && !data.length && (
 									<TableBody>
 										<TableRow>
-											<TableCell align='center' colSpan={6} sx={{ py: 3 }}>
+											<TableCell
+												align='center'
+												colSpan={colsSpan}
+												sx={{ py: 3 }}
+											>
 												<Paper
 													sx={{
 														textAlign: 'center'
 													}}
 												>
 													<Typography variant='h6' paragraph>
-														Empty
+														{t('Empty')}
 													</Typography>
 
 													<Typography variant='body2'>
-														It looks like the database is empty
+														{t('LooksEmpty')}
 													</Typography>
 												</Paper>
 											</TableCell>
@@ -369,6 +393,7 @@ export default function TestPageLayout({
 						count={data.length}
 						rowsPerPage={rowsPerPage}
 						page={page}
+						labelRowsPerPage={t('RowsPerPage')}
 						onPageChange={handleChangePage}
 						onRowsPerPageChange={handleChangeRowsPerPage}
 					/>
@@ -389,8 +414,8 @@ export default function TestPageLayout({
 				transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 				PaperProps={{
 					sx: {
-						p: 1,
-						width: 140,
+						'p': 1,
+						'width': 140,
 						'& .MuiMenuItem-root': {
 							px: 1,
 							typography: 'body2',
@@ -399,14 +424,9 @@ export default function TestPageLayout({
 					}
 				}}
 			>
-				<MenuItem>
-					<Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-					Edit
-				</MenuItem>
-
 				<MenuItem sx={{ color: 'error.main' }} onClick={handleOpenConfirmMenu}>
 					<Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-					Delete
+					{t('Delete')}
 				</MenuItem>
 			</Popover>
 		</>

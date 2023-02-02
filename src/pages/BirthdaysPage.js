@@ -1,14 +1,9 @@
 import { useState } from 'react'
 import { DialogContent, TextField } from '@mui/material'
-import NewItemModal from '../components/modal/NewItemModal'
+import { useTranslation } from 'react-i18next'
+import { NewItemModal } from '../components/modal'
 import { TablePageLayout } from '../layouts/table-page'
 import { API_ENDPOINTS, ApiService } from '../services/apiService'
-
-const TABLE_HEAD = [
-	{ id: 'student_name', label: 'Student Name', alignRight: false },
-	{ id: 'date', label: 'Birthday Date', alignRight: false },
-	{ id: '' }
-]
 
 function descendingComparator(a, b, orderBy) {
 	let left
@@ -35,12 +30,20 @@ function descendingComparator(a, b, orderBy) {
 	}
 }
 
-export default function BirthdayPage() {
+export default function BirthdaysPage() {
 	const [studentName, setStudentName] = useState('')
 	const [date, setDate] = useState('')
 	const [snErrored, setSnErrored] = useState(true)
 	const [dateErrored, setDateErrored] = useState(true)
 	const [refreshTable, setRefreshTable] = useState(false)
+
+	const { t } = useTranslation(['table', 'nav', 'common'])
+
+	const TABLE_HEAD = [
+		{ id: 'student_name', label: t('Student'), alignRight: false },
+		{ id: 'date', label: t('Date'), alignRight: false },
+		{ id: '' }
+	]
 
 	const handleStudentNameChange = event => {
 		if (!event.target.value) {
@@ -90,20 +93,19 @@ export default function BirthdayPage() {
 	return (
 		<TablePageLayout
 			fetchEndpoint={API_ENDPOINTS.BIRTHDAY}
-			title={'Birthdays'}
+			title={t('Birthdays', { ns: 'nav' })}
 			tableHead={TABLE_HEAD}
 			refreshTable={refreshTable}
 			setRefreshTable={setRefreshTable}
 			descendingComparator={descendingComparator}
 			button={
 				<>
-					<NewItemModal btnText={'New birthday'} handleCreate={handleCreate}>
+					<NewItemModal handleCreate={handleCreate}>
 						<DialogContent>
 							<TextField
-								autoFocus
 								margin='dense'
 								id='student_name'
-								label='Student name'
+								label={t('Student')}
 								type='text'
 								fullWidth
 								variant='outlined'
@@ -113,7 +115,9 @@ export default function BirthdayPage() {
 							<TextField
 								margin='dense'
 								id='date'
-								label='Date (example: 25.04)'
+								label={`${t('Date')} (${t('Example', {
+									ns: 'common'
+								})}: 25.04)`}
 								type='text'
 								fullWidth
 								variant='outlined'

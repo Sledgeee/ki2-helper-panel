@@ -1,12 +1,19 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 export default function ConfigDialog({ open, handleClose, handleYes }) {
+	const { t } = useTranslation('modal')
+
 	return (
 		<Dialog open={open} onClose={handleClose}>
-			<DialogTitle>{'Are you sure you want to delete?'}</DialogTitle>
+			<DialogTitle>{t('AskDelete')}</DialogTitle>
 			<DialogActions>
-				<Button onClick={handleClose}>Cancel</Button>
-				<Button onClick={handleYes}>Yes</Button>
+				<Button variant={'outlined'} onClick={handleClose}>
+					{t('Cancel')}
+				</Button>
+				<Button variant={'contained'} onClick={handleYes}>
+					{t('Yes')}
+				</Button>
 			</DialogActions>
 		</Dialog>
 	)
