@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 // @mui
 import { alpha, styled } from '@mui/material/styles'
@@ -12,6 +13,7 @@ import {
 // component
 import { useTranslation } from 'react-i18next'
 import Iconify from '../../../components/iconify'
+import { ConfirmDialog } from '../../../components/confirm-dialog'
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +54,7 @@ export default function ListToolbar({
 	onFilterName,
 	handleDelete
 }) {
+	const [open, setOpen] = useState(false)
 	const { t } = useTranslation('table')
 
 	return (
@@ -65,7 +68,7 @@ export default function ListToolbar({
 		>
 			{numSelected > 0 ? (
 				<Typography component='div' variant='subtitle1'>
-					{numSelected} selected
+					{numSelected} {t('Selected')}
 				</Typography>
 			) : (
 				<StyledSearch
@@ -83,9 +86,18 @@ export default function ListToolbar({
 				/>
 			)}
 
+			<ConfirmDialog
+				open={open}
+				handleClose={() => setOpen(false)}
+				handleYes={() => {
+					handleDelete()
+					setOpen(false)
+				}}
+			/>
+
 			{numSelected > 0 && (
-				<Tooltip title='Delete'>
-					<IconButton onClick={handleDelete}>
+				<Tooltip title={t('Delete')}>
+					<IconButton onClick={() => setOpen(true)}>
 						<Iconify icon='eva:trash-2-fill' />
 					</IconButton>
 				</Tooltip>

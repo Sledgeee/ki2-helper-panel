@@ -26,5 +26,6 @@
   "Type": "Type",
   "Audience": "Audience",
   "CopyToOther": "Copy to other",
-  "Link": "Link"
+  "Link": "Link",
+  "Selected": "selected"
 }
