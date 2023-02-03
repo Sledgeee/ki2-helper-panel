@@ -57,7 +57,6 @@ export default function SchedulePage() {
 	}
 
 	const { t } = useTranslation('table')
-
 	const TABLE_HEAD = [
 		{ id: 'day', label: t('Day'), alignRight: false },
 		{ id: 'day_number', label: t('DayNumber'), alignRight: false },
