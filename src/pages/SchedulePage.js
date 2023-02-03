@@ -53,8 +53,7 @@ export default function SchedulePage() {
 		'Вівторок': 2,
 		'Середа': 3,
 		'Четвер': 4,
-		"П'ятниця": 5,
-		'Субота': 6
+		"П'ятниця": 5
 	}
 
 	const { t } = useTranslation('table')
